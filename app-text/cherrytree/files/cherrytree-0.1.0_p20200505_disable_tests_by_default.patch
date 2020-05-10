@@ -1,0 +1,37 @@
+diff -ur a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2020-05-05 01:05:13.000000000 +0300
++++ b/CMakeLists.txt	2020-05-22 11:07:58.954431204 +0300
+@@ -15,6 +15,7 @@
+ endif(NOT SHARE_INSTALL)
+ set(CHERRYTREE_SHARE_INSTALL "${SHARE_INSTALL}/cherrytree")
+ 
++option(USE_CPPTEST "Enable tests" OFF)
+ 
+ set(CPACK_PACKAGE_NAME "cherrytree")
+ set(CPACK_PACKAGE_CONTACT "Giuseppe Penone <giuspen@gmail.com>")
+@@ -68,7 +69,10 @@
+ pkg_check_modules(GSPELL gspell-1 REQUIRED)
+ pkg_check_modules(LIBXML libxml++-2.6 REQUIRED)
+ pkg_check_modules(SQLITE sqlite3 REQUIRED)
+-pkg_check_modules(CPPUTEST cpputest  REQUIRED)
++
++if(USE_CPPTEST)
++  pkg_check_modules(CPPUTEST cpputest  REQUIRED)
++endif()
+ 
+ add_subdirectory(src/7za)
+ 
+@@ -88,9 +92,10 @@
+ )
+ 
+ add_subdirectory(src/ct)
+-
+-enable_testing()
+-add_subdirectory(tests)
++if(USE_CPPTEST)
++  enable_testing()
++  add_subdirectory(tests)
++endif()
+ 
+ 
+ 
